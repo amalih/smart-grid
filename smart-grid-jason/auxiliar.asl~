@@ -1,0 +1,85 @@
+// Agent auxiliar in project IA.mas2j
+
+
+/* Initial beliefs and rules */
+
+energy(70).
+off(subA).
+off(subB).
+off(subC).
+off(subF).
+off(subG).
+off(subL).
+off(subM).
+off(subN).
+off(subO).
+off(subP).
+
+
+/* Initial goals */
+
+!tellenergy.
+
+
+/* Plans */
+
++!tellenergy
+		<- .print("Starting...");
+		.broadcast(tell, priority(subA));
+		.print("Priority: A");
+		.broadcast(tell, energy(70)).
+
+/* Ligar */
++on(subA) : energy(X) <- .print("A is connected.");
+						 -+energy(X-5);
+						 -off(subA);
+						 .print("Energy: ",(X-5));
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-5)).
+
++on(subB) : energy(X) <- .print("B is connected.");
+ 						 -+energy(X-5);
+						 -off(subB);
+						 .print("Energy: ",(X-5));
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-5)).
+
++on(subC) : energy(X) <- .print("C is connected.");
+ 						 -+energy(X-10);
+						 -off(subC);
+						 .print("Energy: ",(X-10));
+						 .print("Prioridade: G");
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-10)).
+
++on(subG) : energy(X) <- .print("G is connected.");
+ 						 -+energy(X-20);
+						 -off(subG);
+						 .print("Energia: ",(X-20));
+						 .print("Prioridade: L");
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-20)).
+
++on(subL) : energy(X) <- .print("L is connected.");
+ 						 -+energy(X-13);
+						 -off(subL);
+						 .print("Energia: ",(X-13));
+						 .print("Prioridade: L");
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-13)).
+
++on(subF) : energy(X) <- .print("F is connected.");
+ 						 -+energy(X-50);
+						 -off(subF);
+						 .print("Energia: ",(X-50));
+						 .print("Prioridade: B");
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-50)).
+
++on(subO) : energy(X) <- .print("O is connected.");
+ 						 -+energy(X-40);
+						 -off(subO);
+						 .print("Energia: ",(X-40));
+						 .print("Prioridade: P");
+						 .broadcast(untell,energy(X));
+						 .broadcast(tell,energy(X-40)).
