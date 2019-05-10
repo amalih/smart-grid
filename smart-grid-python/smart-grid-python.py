@@ -63,14 +63,15 @@ def main():
                         break
 
         if not connected[currNode]:
-            # Find shortest path from current node to all predecessors
+            # Find shortest path from current node to all predecessors.
+            # Returns the dictionary distFromCurr, and the list prevToCurr.
             distFromCurr, prevToCurr = dijkstra(nodes, distancesInverted, currNode)
 
-            # connList is a list of nodes, on the shortest path from the current node to A, that are connected
+            # connList is a list of the connected nodes on the shortest path from the current node to A
             connList = []
             prevNode = prevToSource[currNode]
 
-            # Add all nodes on path to A to connList
+            # Add all connected nodes on path to A to connList
             while prevNode != None:
                 if connected[prevNode]:
                     connList.append(prevNode)
@@ -79,14 +80,16 @@ def main():
             closestConnNode = connList[0]
             currShortestDist = distFromCurr[connList[0]]
 
-            # Check if there exists a shorter path between currNode and the corrently connected nodes
+            # Check if there exists a shorter path between currNode and the corrently connected nodes, 
+            # by iterating through the list of nodes not in connList and updating currShortestDist if
+            # a shorter distance is found.
             for node in nodes:
                 if connected[node] and node not in connList:
                     if distFromCurr[node] < currShortestDist:
                         currShortestDist = distFromCurr[node]
                         closestConnNode = node
 
-            # Create trial states to enable testing of feasability of operation.
+            # Create trial states to enable testing of feasability of operation before updating the actual state.
             # This is one way to ensure that we disconnect nodes of lower priority whenever possible and
             # necessary in order to connect a node of higher priority.
             if currShortestDist <= remainingEnergy + potentialEnergy:
@@ -130,7 +133,8 @@ def main():
                             trialConnected[node] = 0
                             trialEnergy += cost[node]
                             trialPotential -= cost[node]
-
+                
+                # If the operation was feasible, we update the actual state.
                 if trialEnergy >= 0:
                     connected = trialConnected
                     remainingEnergy = trialEnergy
@@ -139,6 +143,7 @@ def main():
     print("NODE LIST: ", connected)
 
 
+# To check if we can connect the source and start search.
 def init(source, remainingEnergy, cost, connected):
     if cost[source] <= remainingEnergy:
         connected[source] = 1
@@ -150,6 +155,7 @@ def init(source, remainingEnergy, cost, connected):
         exit()
 
 
+# Returns 1 if there exists a path from 'node' to 'source' that does not include nodes in 'visited', and 0 otherwise.
 def findPathToSource(node, visited, neighbours, source, connected):
     visited.append(node)
     if node == source:
