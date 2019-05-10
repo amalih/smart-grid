@@ -46,6 +46,9 @@ def main():
 
 
     connected, remainingEnergy = init(source, remainingEnergy, cost, connected)
+    
+    # Calculate shortest distance from the source to each node.
+    # Returns the dictionary distFromSource and the list prevToSource.
     distFromSource, prevToSource = dijkstra(nodes, distances, source)
 
     for currNode in nodes[1:]:
